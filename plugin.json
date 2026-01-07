@@ -1,0 +1,12 @@
+{
+  "ID": "8F13CE4676B6418F8D25B0AE044180C8",
+  "ActionKeyword": "hyp",
+  "Name": "HoYoPlay Quick Launch",
+  "Author": "Studio Butter",
+  "Version": "1.0.0",
+  "Language": "csharp",
+  "Website": "https://github.com/studiobutter",
+  "ExecuteFileName": "PowerToysRun.HoYoPlay.dll",
+  "IcoPathDark": "Images\\icon.ico",
+  "IcoPathLight": "Images\\icon.ico"
+}
