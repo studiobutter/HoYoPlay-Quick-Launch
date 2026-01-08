@@ -17,7 +17,10 @@ namespace PowerToysRun.HoYoPlay
         {
             get
             {
-                var uri = $"hyp-global://launchgame?gamebiz={GameBiz}&openGame=true";
+                // 🛑 CHANGED: hyp-global -> hyp-cn
+                var uri = $"hyp-cn://launchgame?gamebiz={GameBiz}&openGame=true";
+
+                // Note: CN games usually don't need 'package', but we keep support just in case
                 if (!string.IsNullOrEmpty(Package))
                 {
                     uri += $"&package={Package}";
@@ -125,12 +128,17 @@ namespace PowerToysRun.HoYoPlay
         private List<HoYoGame> GetInstalledGames()
         {
             var games = new List<HoYoGame>();
-            // Note: This path is usually in HKCU (Current User)
-            string rootPath = @"Software\Cognosphere\HYP\1_0";
+
+            // 🛑 CHANGED: Cognosphere -> miHoYo
+            string rootPath = @"Software\miHoYo\HYP\1_1";
 
             using (RegistryKey? rootKey = Registry.CurrentUser.OpenSubKey(rootPath))
             {
-                if (rootKey == null) return games;
+                if (rootKey == null)
+                {
+                    Log.Warn($"[HoYoPlay] Registry key not found: {rootPath}", typeof(Main));
+                    return games;
+                }
 
                 string[] subKeys = rootKey.GetSubKeyNames();
 
@@ -140,30 +148,30 @@ namespace PowerToysRun.HoYoPlay
                     {
                         if (gameKey == null) continue;
 
+                        // Validation: Ensure the game is actually installed
                         object? pathValue = gameKey.GetValue("GameInstallPath");
                         if (pathValue is not string path || string.IsNullOrWhiteSpace(path))
                         {
                             continue;
                         }
 
-                        // --- GAME MAPPING ---
-                        // Update these Image names to match your actual files!
-                        if (subKeyName == "hk4e_global")
+                        // 🛑 CHANGED: Mapping for Mainland China IDs
+                        if (subKeyName == "hk4e_cn")
                         {
-                            games.Add(new HoYoGame { Title = "Genshin Impact", GameBiz = "hk4e_global", IconName = "icon_ys.ico" });
+                            games.Add(new HoYoGame { Title = "Genshin Impact (CN)", GameBiz = "hk4e_cn", IconName = "icon_ys.ico" });
                         }
-                        else if (subKeyName == "hkrpg_global")
+                        else if (subKeyName == "hkrpg_cn")
                         {
-                            games.Add(new HoYoGame { Title = "Honkai: Star Rail", GameBiz = "hkrpg_global", IconName = "icon_sr.ico" });
+                            games.Add(new HoYoGame { Title = "Honkai: Star Rail (CN)", GameBiz = "hkrpg_cn", IconName = "icon_sr.ico" });
                         }
-                        else if (subKeyName == "nap_global")
+                        else if (subKeyName == "nap_cn")
                         {
-                            games.Add(new HoYoGame { Title = "Zenless Zone Zero", GameBiz = "nap_global", IconName = "icon_zzz.ico" });
+                            games.Add(new HoYoGame { Title = "Zenless Zone Zero (CN)", GameBiz = "nap_cn", IconName = "icon_zzz.ico" });
                         }
-                        else if (subKeyName.StartsWith("bh3_global"))
+                        // 🛑 SIMPLIFIED: No complex parsing needed for HI3 CN
+                        else if (subKeyName == "bh3_cn")
                         {
-                            var hi3Game = ParseHonkaiImpact(subKeyName);
-                            if (hi3Game != null) games.Add(hi3Game);
+                            games.Add(new HoYoGame { Title = "Honkai Impact 3rd (CN)", GameBiz = "bh3_cn", IconName = "icon_bh3.ico" });
                         }
                     }
                 }
@@ -171,54 +179,7 @@ namespace PowerToysRun.HoYoPlay
             return games;
         }
 
-        private HoYoGame? ParseHonkaiImpact(string registryKey)
-        {
-            string title = "Honkai Impact 3rd";
-            string package = "glb_official"; // Default fallback
-
-            // Make it case-insensitive and lenient
-            string lowerKey = registryKey.ToLower();
-
-            if (lowerKey.Contains("overseas"))
-            {
-                title += " (SEA)";
-                package = "overseas_official";
-            }
-            else if (lowerKey.Contains("jp"))
-            {
-                title += " (Japan)";
-                package = "jp_official";
-            }
-            else if (lowerKey.Contains("kr"))
-            {
-                title += " (Korea)";
-                package = "kr_official";
-            }
-            else if (lowerKey.Contains("asia") || lowerKey.Contains("tw"))
-            {
-                title += " (TW/HK/MO)";
-                package = "asia_official";
-            }
-            else if (lowerKey.Contains("glb") || lowerKey.Contains("global"))
-            {
-                title += " (Global)";
-                package = "glb_official";
-            }
-            else
-            {
-                // 🛑 DEBUG FALLBACK:
-                // If we found a folder but didn't recognize the region, show it anyway so we know!
-                title += $" (Unknown Region: {registryKey})";
-                package = "glb_official";
-            }
-
             return new HoYoGame
-            {
-                Title = title,
-                GameBiz = "bh3_global", // Base ID is usually constant
-                Package = package,
-                IconName = "icon_bh3.ico"
-            };
         }
     }
 }
