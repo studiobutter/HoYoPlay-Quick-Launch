@@ -13,7 +13,9 @@
 
   <ItemGroup>
     <PackageReference Include="Community.PowerToys.Run.Plugin.Dependencies" Version="0.96.1">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <ExcludeAssets>runtime</ExcludeAssets>
+      <Private>false</Private>
     </PackageReference>
   </ItemGroup>
 

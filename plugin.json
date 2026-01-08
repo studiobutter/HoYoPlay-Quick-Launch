@@ -1,9 +1,9 @@
 {
   "ID": "8F13CE4676B6418F8D25B0AE044180C8",
-  "ActionKeyword": "hyp",
+  "ActionKeyword": "mhy",
   "Name": "HoYoPlay Quick Launch",
   "Author": "Studio Butter",
-  "Version": "1.0.0",
+  "Version": "0.1.5",
   "Language": "csharp",
   "Website": "https://github.com/studiobutter",
   "ExecuteFileName": "PowerToysRun.HoYoPlay.dll",
