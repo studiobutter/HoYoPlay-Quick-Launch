@@ -55,7 +55,7 @@ namespace PowerToysRun.HoYoPlay
                 throw;
             }
         }
-        
+
         public List<Result> Query(Query query)
         {
             var results = new List<Result>();
@@ -69,7 +69,7 @@ namespace PowerToysRun.HoYoPlay
                 {
                     Title = "Reload Game List",
                     SubTitle = "Force a re-scan of the Registry",
-                    IcoPath = "Images\\icon.ico", 
+                    IcoPath = "Images\\icon.ico",
                     Action = _ =>
                     {
                         _cachedGames = GetInstalledGames();
@@ -112,7 +112,7 @@ namespace PowerToysRun.HoYoPlay
         {
             var games = new List<HoYoGame>();
             // 🛑 CN Registry Path
-            string rootPath = @"Software\miHoYo\HYP\1_0";
+            string rootPath = @"Software\miHoYo\HYP\1_1";
 
             using (RegistryKey? rootKey = Registry.CurrentUser.OpenSubKey(rootPath))
             {
@@ -136,6 +136,10 @@ namespace PowerToysRun.HoYoPlay
                             games.Add(new HoYoGame { Title = "Zenless Zone Zero (CN)", GameBiz = "nap_cn", IconName = "icon_zzz.ico" });
                         else if (subKeyName == "bh3_cn")
                             games.Add(new HoYoGame { Title = "Honkai Impact 3rd (CN)", GameBiz = "bh3_cn", IconName = "icon_bh3.ico" });
+                        else if (subKeyName == "abc_cn")
+                            games.Add(new HoYoGame { Title = "Honkai: Nexus Anima (CN)", GameBiz = "abc_cn", IconName = "icon_na.ico" });
+                        else if (subKeyName == "hyg_cn")
+                            games.Add(new HoYoGame { Title = "Petit Planet (CN)", GameBiz = "hyg_cn", IconName = "icon_planet.ico" });
                     }
                 }
             }
