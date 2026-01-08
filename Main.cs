@@ -160,6 +160,14 @@ namespace PowerToysRun.HoYoPlay
                         {
                             games.Add(new HoYoGame { Title = "Zenless Zone Zero", GameBiz = "nap_global", IconName = "icon_zzz.ico" });
                         }
+                        else if (subKeyName == "abc_global")
+                        {
+                            games.Add(new HoYoGame { Title = "Honkai: Nexus Anima", GameBiz = "abc_global", IconName = "icon_na.ico" });
+                        }
+                        else if (subKeyName == "hyg_global")
+                        {
+                            games.Add(new HoYoGame { Title = "Petit Planet", GameBiz = "hyg_global", IconName = "icon_planet.ico" });
+                        }
                         else if (subKeyName.StartsWith("bh3_global"))
                         {
                             var hi3Game = ParseHonkaiImpact(subKeyName);
