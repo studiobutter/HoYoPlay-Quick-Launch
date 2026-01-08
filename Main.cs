@@ -1,4 +1,5 @@
 ﻿using Wox.Plugin;
+using Wox.Plugin.Logger;
 using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
@@ -38,40 +39,25 @@ namespace PowerToysRun.HoYoPlay
 
         public void Init(PluginInitContext context)
         {
-            // 1. Define the correct hidden path in AppData
-            // Path: %LocalAppData%\Microsoft\PowerToys\PowerToys Run\Settings\Plugins\PowerToysRun.HoYoPlay\Logs.txt
-            string logDir = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                @"Microsoft\PowerToys\PowerToys Run\Settings\Plugins\PowerToysRun.HoYoPlay"
-            );
+            _context = context;
 
-            // Ensure folder exists (PowerToys might create it later, so we force it now)
-            Directory.CreateDirectory(logDir);
-            string logPath = Path.Combine(logDir, "Logs.txt");
+            // This writes to the standard PowerToys log path
+            Log.Info($"[HoYoPlay] Init started. Version: {_context.CurrentPluginMetadata.Version}", typeof(Main));
 
             try
             {
-                // 2. Start the log (Overwrite old log on every startup to keep file size small)
-                File.WriteAllText(logPath, $"[{DateTime.Now}] Plugin Version {context.CurrentPluginMetadata.Version} Startup...\n");
-
-                _context = context;
-
-                // 3. Run your logic
+                Log.Info("[HoYoPlay] Scanning registry for games...", typeof(Main));
                 _cachedGames = GetInstalledGames();
-
-                File.AppendAllText(logPath, $"[{DateTime.Now}] Init Success. Found {_cachedGames.Count} games.\n");
+                Log.Info($"[HoYoPlay] Found {_cachedGames.Count} games. Init Success!", typeof(Main));
             }
             catch (Exception ex)
             {
-                // 4. Catch and Log Critical Failures
-                File.AppendAllText(logPath, $"[{DateTime.Now}] CRITICAL STARTUP ERROR:\n{ex}\n");
-
-                // Optional: Re-throw if you want PowerToys to know it failed, 
-                // or swallow it so the plugin stays "alive" but does nothing.
-                // throw; 
+                // This captures the full stack trace in the main log
+                Log.Exception($"[HoYoPlay] FATAL ERROR during Init: {ex.Message}", ex, typeof(Main));
+                throw;
             }
         }
-        
+
         public List<Result> Query(Query query)
         {
             var results = new List<Result>();

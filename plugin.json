@@ -3,7 +3,7 @@
   "ActionKeyword": "hyp",
   "Name": "HoYoPlay Quick Launch",
   "Author": "Studio Butter",
-  "Version": "1.0.0",
+  "Version": "0.1.5",
   "Language": "csharp",
   "Website": "https://github.com/studiobutter",
   "ExecuteFileName": "PowerToysRun.HoYoPlay.dll",
