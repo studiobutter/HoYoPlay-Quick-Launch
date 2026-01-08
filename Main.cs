@@ -28,13 +28,13 @@ namespace PowerToysRun.HoYoPlay
 
     public class Main : IPlugin
     {
-        public static string PluginID => "8F13CE4676B6418F8D25B0AE044180C8";
+        public static string PluginID => "2C03D96350FE4EBE81A9399F36F4E46E";
 
         private PluginInitContext? _context;
         private List<HoYoGame> _cachedGames = new List<HoYoGame>();
 
-        public string Name => "HoYoPlay Quick Launch";
-        public string Description => "Quickly launch HoYoverse games via HoYoPlay";
+        public string Name => "HoYoPlay Quick Launch - Mainland China";
+        public string Description => "Quickly launch miHoYo games via HoYoPlay";
 
         public void Init(PluginInitContext context)
         {
