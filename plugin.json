@@ -6,7 +6,7 @@
   "Version": "0.1.5",
   "Language": "csharp",
   "Website": "https://github.com/studiobutter",
-  "ExecuteFileName": "PowerToysRun.HoYoPlay.dll",
+  "ExecuteFileName": "PowerToysRun.HoYoPlay.CN.dll",
   "IcoPathDark": "Images\\icon.ico",
   "IcoPathLight": "Images\\icon.ico"
 }
