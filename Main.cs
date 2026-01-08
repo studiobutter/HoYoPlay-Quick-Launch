@@ -31,7 +31,7 @@ namespace PowerToysRun.HoYoPlay
     public class Main : IPlugin
     {
         // 🛑 Make sure this ID matches your new CN GUID in plugin.json
-        public static string PluginID => "YOUR_NEW_CN_GUID_HERE";
+        public static string PluginID => "2C03D96350FE4EBE81A9399F36F4E46E";
 
         private PluginInitContext? _context;
         private List<HoYoGame> _cachedGames = new List<HoYoGame>();
